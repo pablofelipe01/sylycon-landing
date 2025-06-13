@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sylicon - Ecosistema de Tokenización de Activos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f4c75;
+            --highlight: #3282b8;
+            --text: #ffffff;
+            --gold: #ffd700;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Particles Background */
+        #particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(50, 130, 184, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 30px 0;
+            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 46, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 15px 0;
+            background: rgba(26, 26, 46, 0.95);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--highlight), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--highlight);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--text), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                filter: brightness(1);
+            }
+            50% {
+                filter: brightness(1.2);
+            }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, var(--highlight), var(--accent));
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(50, 130, 184, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(50, 130, 184, 0.5);
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 50px 0;
+            background: rgba(15, 76, 117, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .stat-item p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Platforms Section */
+        .platforms {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .platform-card {
+            background: rgba(22, 33, 62, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(50, 130, 184, 0.3);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(50, 130, 184, 0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .platform-card:hover::before {
+            transform: scale(1);
+        }
+
+        .platform-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--highlight);
+            box-shadow: 0 20px 40px rgba(50, 130, 184, 0.3);
+        }
+
+        .platform-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .platform-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--highlight);
+        }
+
+        .platform-card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .platform-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .status-active {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid rgba(0, 255, 0, 0.5);
+        }
+
+        .status-coming {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--gold);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: rgba(15, 76, 117, 0.1);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 30px;
+            background: rgba(22, 33, 62, 0.4);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            background: rgba(22, 33, 62, 0.6);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--highlight);
+        }
+
+        .feature-item h4 {
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .feature-item p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 0 30px;
+            background: rgba(26, 26, 46, 0.9);
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--highlight);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .platforms-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles"></div>
+
+    <header id="header">
+        <nav class="container">
+            <a href="#" class="logo">SYLICON</a>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#plataformas">Plataformas</a></li>
+                <li><a href="#caracteristicas">Características</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h1>El Futuro de la Tokenización de Activos</h1>
+            <p>Un ecosistema integral donde cada activo encuentra su lugar en la blockchain. Inmuebles, arte, patrimonios y más, todo en un solo lugar.</p>
+            <a href="#plataformas" class="cta-button">Explorar Plataformas</a>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>$2.5M+</h3>
+                    <p>Activos Tokenizados</p>
+                </div>
+                <div class="stat-item">
+                    <h3>1,200+</h3>
+                    <p>Usuarios Activos</p>
+                </div>
+                <div class="stat-item">
+                    <h3>98%</h3>
+                    <p>Satisfacción</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Soporte Premium</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="platforms" id="plataformas">
+        <div class="container">
+            <h2 class="section-title">Nuestras Plataformas</h2>
+            <p class="section-subtitle">Cada plataforma está diseñada específicamente para su tipo de activo, garantizando la mejor experiencia de tokenización.</p>
+            
+            <div class="platforms-grid">
+                <div class="platform-card" onclick="window.location.href='https://sylicon-kravata.vercel.app/'">
+                    <span class="platform-icon">🏢</span>
+                    <h3>Sylicon Real Estate</h3>
+                    <p>Tokenización de propiedades inmobiliarias. Invierte en bienes raíces desde $100 USD con total transparencia y seguridad blockchain.</p>
+                    <span class="platform-status status-active">ACTIVA</span>
+                </div>
+
+                <div class="platform-card">
+                    <span class="platform-icon">🎨</span>
+                    <h3>Sylicon Art</h3>
+                    <p>Democratizamos el arte. Tokeniza y fracciona obras de arte, permitiendo que cualquiera pueda invertir en piezas exclusivas.</p>
+                    <span class="platform-status status-coming">PRÓXIMAMENTE</span>
+                </div>
+
+                <div class="platform-card">
+                    <span class="platform-icon">💼</span>
+                    <h3>Sylicon Trusts</h3>
+                    <p>Patrimonios autónomos diversificados. Combina múltiples activos en un solo token para maximizar la diversificación.</p>
+                    <span class="platform-status status-coming">PRÓXIMAMENTE</span>
+                </div>
+
+                <div class="platform-card">
+                    <span class="platform-icon">⚡</span>
+                    <h3>Sylicon Energy</h3>
+                    <p>Invierte en el futuro energético. Tokenización de proyectos de energía renovable y activos del sector energético.</p>
+                    <span class="platform-status status-coming">EN DESARROLLO</span>
+                </div>
+
+                <div class="platform-card">
+                    <span class="platform-icon">🏗️</span>
+                    <h3>Sylicon Infrastructure</h3>
+                    <p>Grandes proyectos al alcance de todos. Participa en la tokenización de infraestructura pública y privada.</p>
+                    <span class="platform-status status-coming">EN DESARROLLO</span>
+                </div>
+
+                <div class="platform-card">
+                    <span class="platform-icon">🌾</span>
+                    <h3>Sylicon Agro</h3>
+                    <p>Conecta con el campo. Tokenización de activos agrícolas, desde tierras hasta proyectos productivos completos.</p>
+                    <span class="platform-status status-coming">PLANEADO</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="caracteristicas">
+        <div class="container">
+            <h2 class="section-title">Un Ecosistema, Múltiples Ventajas</h2>
+            <p class="section-subtitle">Todas nuestras plataformas comparten la misma infraestructura de vanguardia</p>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <span class="feature-icon">🔐</span>
+                    <h4>Registro Único</h4>
+                    <p>Una sola cuenta para acceder a todas las plataformas. KYC verificado una vez, válido en todo el ecosistema.</p>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">⚙️</span>
+                    <h4>Backend Unificado</h4>
+                    <p>Infraestructura compartida que garantiza consistencia, seguridad y actualizaciones simultáneas.</p>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">💱</span>
+                    <h4>Liquidez Cruzada</h4>
+                    <p>Intercambia tokens entre diferentes plataformas sin fricciones. Tu portafolio, completamente diversificado.</p>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">📊</span>
+                    <h4>Dashboard Central</h4>
+                    <p>Visualiza todos tus activos tokenizados en un solo lugar, sin importar en qué plataforma estén.</p>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">🛡️</span>
+                    <h4>Seguridad Blockchain</h4>
+                    <p>Tecnología Polygon para transacciones rápidas, seguras y con costos mínimos en todas las plataformas.</p>
+                </div>
+
+                <div class="feature-item">
+                    <span class="feature-icon">🎯</span>
+                    <h4>Soporte 24/7</h4>
+                    <p>Un equipo de soporte para todo el ecosistema. Respuestas rápidas sin importar qué plataforma uses.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">SYLICON</div>
+                <ul class="footer-links">
+                    <li><a href="#">Términos</a></li>
+                    <li><a href="#">Privacidad</a></li>
+                    <li><a href="#">Documentación</a></li>
+                    <li><a href="#">API</a></li>
+                </ul>
+            </div>
+            <p class="copyright">© 2025 Sylicon GP SAS. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Particles animation
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 20 + 20) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize
+        createParticles();
+    </script>
+</body>
+</html>
